@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 #define MAXLINE 1000
-#define THRESHOLD 80
 
 int my_getline(char line[], int maxline);
 void copy(char to[], char from[]);
@@ -11,7 +10,7 @@ int main(void) {
     int len, nlines = 0;
     char line[MAXLINE];
     char **lines = NULL;
-    const int LINE_SIZE = 5;
+    const int LINE_SIZE = 80;
     while ((len = my_getline(line, MAXLINE)) > 0) {
         if (len - 1 > LINE_SIZE) {
             char **temp = (char **)realloc(lines, (nlines + 1) * sizeof(char *));
