@@ -1,19 +1,19 @@
 #include <stdio.h>
 
 int main() {
-    int count_space = 0;
-    int count_tab = 0;
-    int count_newline = 0;
+    int nspaces = 0;
+    int ntabs = 0;
+    int nnewlines = 0;
     int ch;
     while ((ch = getchar()) != EOF) {
         if (ch == ' ') {
-            count_space++;
+            nspaces++;
         } else if (ch == '\t') {
-            count_tab++;
+            ntabs++;
         } else if (ch == '\n') {
-            count_newline++;
+            nnewlines++;
         }
     }
     printf("Spaces: %d Tabs: %d Newlines: %d\n",
-        count_space, count_tab, count_newline);
+        nspaces, ntabs, nnewlines);
 }
