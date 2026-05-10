@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 void squeeze_char(char s[], int c) {
     int i, j;
@@ -8,13 +9,13 @@ void squeeze_char(char s[], int c) {
     s[j] = '\0';
 }
 
-int contains(char s[], int c) {
+bool contains(char s[], int c) {
     for (int i = 0; s[i] != '\0'; i++) {
         if (s[i] == c) {
-            return 1;
+            return true;
         }
     }
-    return 0;
+    return false;
 }
 
 void squeeze(char s1[], char s2[]) {
