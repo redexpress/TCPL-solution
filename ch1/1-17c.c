@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "kvec.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+
 #ifdef _WIN32
 typedef long long ssize_t;
 
@@ -13,7 +18,7 @@ ssize_t getline(char **lineptr, size_t *n, FILE *stream) {
         *lineptr = (char *)malloc(*n);
         if (*lineptr == NULL) return -1;
     }
-    
+
     pos = 0;
     while ((c = fgetc(stream)) != EOF) {
         if (pos + 1 >= *n) {
@@ -33,36 +38,31 @@ ssize_t getline(char **lineptr, size_t *n, FILE *stream) {
 #endif
 
 int main(void) {
-    int nlines = 0;
     const int LINE_SIZE = 80;
 
     char *line = NULL;
     size_t len = 0;
-    char **lines = NULL;
+    kvec_t(char *) lines;
+
+    kv_init(lines);
 
     while (getline(&line, &len, stdin) != -1) {
         if (strlen(line) - 1 > LINE_SIZE) {
-            char **temp = (char **)realloc(lines, (nlines + 1) * sizeof(char *));
-            if (temp == NULL) {
-                free(line);
-                free(lines);
-                return 1;
+            char *new_line = (char *)malloc(strlen(line) + 1);
+            if (new_line == NULL) {
+                break; 
             }
-            lines = temp;
-
-            lines[nlines] = (char *)malloc(strlen(line) + 1);
-            if (lines[nlines] == NULL) return 1;
-            strcpy(lines[nlines], line);
-            nlines++;
+            strcpy(new_line, line);
+            kv_push(char*, lines, new_line);
         }
     }
 
     printf("-------------------\n");
-    for (int i = 0; i < nlines; i++) {
-        printf("%s", lines[i]);
-        free(lines[i]);
+    for (int i = 0; i < lines.n; i++) {
+        printf("%s", lines.a[i]);
+        free(lines.a[i]);
     }
-    free(lines);
+    kv_destroy(lines);
     free(line);
     return 0;
 }
